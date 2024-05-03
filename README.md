@@ -64,10 +64,12 @@ This section shows how to setup the project.
 7. Create an .env file with the following entries:
 
    ```env
-    VITE_API_URL=<your-api-base-url>
+    AUTH_SECRET="o++3rN14CRN9aVVp0H74bxmbCKLHohOyz2vhXISOEj4="
+    AUTH_URL=http://localhost:3000/api/auth
+    API_URL=<your-api-base-url>
    ```
 
-   The api base url should look something like: http://localhost:3000/api
+   The api base url should look something like: http://localhost:5000/api
 
 8. Next, install the NPM packages:
 
