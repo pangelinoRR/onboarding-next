@@ -16,57 +16,60 @@ import {
   Link,
 } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
-import { authenticate } from "@/app/lib/actions";
+import { register } from "@/app/lib/actions";
 
 /**
  * Zod validation schema for the form.
  */
-const LoginFormSchema = z.object({
+const RegisterFormSchema = z.object({
   email: z
     .string()
     .min(1, { message: "Email is required" })
     .email({ message: "Must be a valid email" }),
-  password: z.string().min(1, { message: "Password is required" }),
+  name: z.string().min(1, { message: "Name is required" }),
+  password: z
+    .string()
+    .min(4, { message: "Password must have at least 4 characters" }),
 });
 
 /**
  * Form data type based on the form schema.
  */
-export type LoginFormType = z.infer<typeof LoginFormSchema>;
+export type RegisterFormType = z.infer<typeof RegisterFormSchema>;
 
-export default function LoginForm() {
+export default function RegisterForm() {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [loginError, setLoginError] = useState<string | null>();
+  const [registerError, setRegisterError] = useState<string | null>();
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormType>({
-    resolver: zodResolver(LoginFormSchema),
+  } = useForm<RegisterFormType>({
+    resolver: zodResolver(RegisterFormSchema),
     mode: "onChange",
     defaultValues: {
       email: "",
+      name: "",
       password: "",
     },
   });
 
   /**
    * Form submit handler.
-   * Tries to authenticate, and in case of failure
-   * sets the form error message.
    */
-  const onSubmit = async function (data: LoginFormType) {
-    setLoginError(null);
+  const onSubmit = async function (data: RegisterFormType) {
+    setRegisterError(null);
 
     startTransition(async () => {
       try {
-        await authenticate(data);
-        router.push("/dashboard");
+        await register(data);
+        // router.push("/dashboard");
       } catch (error) {
         if (error instanceof Error) {
-          setLoginError(error.message);
+          console.log(error);
+          setRegisterError(error.message);
         }
       }
     });
@@ -120,6 +123,41 @@ export default function LoginForm() {
             )}
           </Stack>
 
+          {/* Name */}
+          <Stack direction="column" spacing={1}>
+            {/* Name Input */}
+            <Controller
+              control={control}
+              name="name"
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  type="text"
+                  name="name"
+                  label="Name"
+                  size="small"
+                  error={errors?.name !== undefined}
+                />
+              )}
+            />
+
+            {/* Name Error */}
+            {errors?.name?.message && (
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <ErrorIcon
+                  sx={{
+                    color: "error.main",
+                    fontSize: 18,
+                  }}
+                />
+
+                <Typography sx={{ color: "error.main", fontSize: 12 }}>
+                  {errors?.name?.message}
+                </Typography>
+              </Stack>
+            )}
+          </Stack>
+
           {/* Password */}
           <Stack direction="column" spacing={1}>
             {/* Password Input */}
@@ -155,8 +193,8 @@ export default function LoginForm() {
             )}
           </Stack>
 
-          {/* Login Form Error */}
-          {loginError && <Alert severity="error">{loginError}</Alert>}
+          {/* Register Form Error */}
+          {registerError && <Alert severity="error">{registerError}</Alert>}
 
           {/* Submit Button */}
           <Stack direction="row" justifyContent="end">
@@ -167,17 +205,17 @@ export default function LoginForm() {
               type="submit"
               disabled={pending}
             >
-              Login
+              Register
             </Button>
           </Stack>
 
-          {/* Link to Register Page */}
+          {/* Link to Login Page */}
           <Link
-            href="/register"
+            href="/login"
             component={NextLink}
             sx={{ fontSize: 12, textAlign: "center" }}
           >
-            {"Don't have an account? Register here."}
+            {"Already have an account? Sign in here."}
           </Link>
         </Stack>
       </Box>

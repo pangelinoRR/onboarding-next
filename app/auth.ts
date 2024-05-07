@@ -2,6 +2,7 @@ import axios from "@/app/lib/axios";
 import { authConfig } from "./auth.config";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { ROUTES } from "./constants/routes";
 
 export const { signIn, signOut, auth } = NextAuth({
   ...authConfig,
@@ -26,13 +27,10 @@ export const { signIn, signOut, auth } = NextAuth({
        */
       async authorize(credentials) {
         try {
-          const result = await axios.post(
-            "http://localhost:5000/api/auth/login",
-            {
-              email: credentials.email,
-              password: credentials.password,
-            }
-          );
+          const result = await axios.post(ROUTES.AUTH.LOGIN, {
+            email: credentials.email,
+            password: credentials.password,
+          });
 
           const { user, token } = result?.data?.data;
 

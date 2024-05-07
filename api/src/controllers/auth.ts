@@ -101,7 +101,9 @@ const register = async function (req: RegisterRequest, res: Response) {
       },
     });
   } catch (error) {
-    return res.json({ message: "Could not register the user.", error });
+    return res
+      .status(400)
+      .json({ message: "Could not register the user.", error });
   }
 };
 

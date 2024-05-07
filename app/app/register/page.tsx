@@ -1,12 +1,12 @@
-import { Metadata } from "next";
-import LoginForm from "@/app/ui/login-form";
 import { Stack, Typography } from "@mui/material";
+import RegisterForm from "../ui/register-form";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Login",
+  title: "Register",
 };
 
-export default function LoginPage() {
+export default function RegisterPage() {
   return (
     <Stack direction="column" spacing={3}>
       <Typography
@@ -18,10 +18,10 @@ export default function LoginPage() {
           letterSpacing: "2px",
         }}
       >
-        Login
+        Register
       </Typography>
 
-      <LoginForm />
+      <RegisterForm />
     </Stack>
   );
 }
