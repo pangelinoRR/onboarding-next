@@ -20,3 +20,29 @@ export interface UserDetailsRequest extends Request {
     id: string;
   };
 }
+
+export interface SpotifySearchRequest extends Request {
+  query: {
+    q: string;
+    limit?: string;
+    offset?: string;
+  };
+}
+
+export interface SpotifyGetRequest extends Request {
+  params: {
+    id: string;
+  };
+}
+
+export interface SpotifyListRequest extends Request {
+  query: {
+    ids: string;
+  };
+}
+
+export interface SpotifySpecifiedIdRequest extends Request {
+  params: {
+    id: string;
+  };
+}
