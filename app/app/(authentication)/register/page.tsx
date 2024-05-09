@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material";
-import RegisterForm from "../ui/register-form";
+import RegisterForm from "../../ui/register-form";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

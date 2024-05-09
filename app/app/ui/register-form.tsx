@@ -65,7 +65,7 @@ export default function RegisterForm() {
     startTransition(async () => {
       try {
         await register(data);
-        // router.push("/dashboard");
+        router.push("/dashboard");
       } catch (error) {
         if (error instanceof Error) {
           console.log(error);

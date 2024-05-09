@@ -15,6 +15,7 @@ const theme: Theme = createTheme({
     },
     backgroundGrey: {
       main: colors.grey[100],
+      shaded: "#e5e5e5",
     },
     borderGrey: {
       main: "#c4c4c4",
