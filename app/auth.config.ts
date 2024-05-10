@@ -16,19 +16,19 @@ export const authConfig = {
          * If the user is logged in, continue to dashboard.
          */
         if (isLoggedIn) {
-          return true;
+          // return true;
         }
 
         /**
          * Not authenticated. Redirect to Login.
          */
-        return false;
+        // return false;
       } else if (isLoggedIn) {
         /**
          * If the user just logged in,
          * go to the Dashboard route.
          */
-        return Response.redirect(new URL("/dashboard", nextUrl));
+        // return Response.redirect(new URL("/", nextUrl));
       }
 
       /**

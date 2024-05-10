@@ -1,7 +1,9 @@
+import NewReleases from "@/app/ui/home-page/new-releases";
+
 export default function Home() {
   return (
     <div>
-      <p>Home Page</p>
+      <NewReleases />
     </div>
   );
 }

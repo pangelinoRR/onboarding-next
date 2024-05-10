@@ -1,6 +1,5 @@
 import { auth } from "@/auth";
-import axios, { AxiosHeaders, CreateAxiosDefaults } from "axios";
-import { getSession } from "next-auth/react";
+import axios, { CreateAxiosDefaults } from "axios";
 
 /**
  * Configuration for the axios instance.
