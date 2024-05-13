@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import NextLink from "next/link";
 import { useForm, Controller } from "react-hook-form";
@@ -17,6 +16,7 @@ import {
 } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 import { authenticate } from "@/app/lib/actions";
+import { useMutation } from "@tanstack/react-query";
 
 /**
  * Zod validation schema for the form.
@@ -36,8 +36,10 @@ export type LoginFormType = z.infer<typeof LoginFormSchema>;
 
 export default function LoginForm() {
   const router = useRouter();
-  const [pending, startTransition] = useTransition();
-  const [loginError, setLoginError] = useState<string | null>();
+
+  const mutation = useMutation({
+    mutationFn: (data: LoginFormType) => authenticate(data),
+  });
 
   const {
     control,
@@ -58,17 +60,8 @@ export default function LoginForm() {
    * sets the form error message.
    */
   const onSubmit = async function (data: LoginFormType) {
-    setLoginError(null);
-
-    startTransition(async () => {
-      try {
-        await authenticate(data);
-        router.push("/dashboard");
-      } catch (error) {
-        if (error instanceof Error) {
-          setLoginError(error.message);
-        }
-      }
+    mutation.mutate(data, {
+      onSuccess: () => router.push("/"),
     });
   };
 
@@ -156,7 +149,9 @@ export default function LoginForm() {
           </Stack>
 
           {/* Login Form Error */}
-          {loginError && <Alert severity="error">{loginError}</Alert>}
+          {mutation.isError && (
+            <Alert severity="error">{mutation.error.message}</Alert>
+          )}
 
           {/* Submit Button */}
           <Stack direction="row" justifyContent="end">
@@ -165,7 +160,7 @@ export default function LoginForm() {
               disableElevation
               size="large"
               type="submit"
-              disabled={pending}
+              disabled={mutation.isPending}
             >
               Login
             </Button>

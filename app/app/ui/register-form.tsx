@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 import { register } from "@/app/lib/actions";
+import { useMutation } from "@tanstack/react-query";
 
 /**
  * Zod validation schema for the form.
@@ -42,6 +43,10 @@ export default function RegisterForm() {
   const [pending, startTransition] = useTransition();
   const [registerError, setRegisterError] = useState<string | null>();
 
+  const mutation = useMutation({
+    mutationFn: (data: RegisterFormType) => register(data),
+  });
+
   const {
     control,
     handleSubmit,
@@ -60,18 +65,8 @@ export default function RegisterForm() {
    * Form submit handler.
    */
   const onSubmit = async function (data: RegisterFormType) {
-    setRegisterError(null);
-
-    startTransition(async () => {
-      try {
-        await register(data);
-        router.push("/dashboard");
-      } catch (error) {
-        if (error instanceof Error) {
-          console.log(error);
-          setRegisterError(error.message);
-        }
-      }
+    mutation.mutate(data, {
+      onSuccess: () => router.push("/"),
     });
   };
 
@@ -194,7 +189,9 @@ export default function RegisterForm() {
           </Stack>
 
           {/* Register Form Error */}
-          {registerError && <Alert severity="error">{registerError}</Alert>}
+          {mutation.isError && (
+            <Alert severity="error">{mutation.error.message}</Alert>
+          )}
 
           {/* Submit Button */}
           <Stack direction="row" justifyContent="end">
@@ -203,7 +200,7 @@ export default function RegisterForm() {
               disableElevation
               size="large"
               type="submit"
-              disabled={pending}
+              disabled={mutation.isPending}
             >
               Register
             </Button>

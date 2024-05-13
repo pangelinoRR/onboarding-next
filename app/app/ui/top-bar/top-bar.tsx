@@ -1,4 +1,6 @@
-import { Stack, Typography } from "@mui/material";
+import { logout } from "@/app/lib/actions";
+import { Button, Stack, Typography } from "@mui/material";
+import { redirect } from "next/navigation";
 
 export default function TopBar() {
   return (
@@ -22,8 +24,22 @@ export default function TopBar() {
         >
           Onboarding App
         </Typography>
-        <Stack>
+        <Stack direction="row" spacing={1} alignItems="center">
           <p>Profile</p>
+          <form
+            action={async (formData) => {
+              "use server";
+
+              await logout();
+
+              /**
+               * Not Working, please refresh the page.
+               */
+              redirect("/login");
+            }}
+          >
+            <Button type="submit">Logout</Button>
+          </form>
         </Stack>
       </Stack>
     </section>

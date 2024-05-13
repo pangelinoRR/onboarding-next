@@ -1,5 +1,5 @@
-import { auth } from "@/auth";
 import axios, { CreateAxiosDefaults } from "axios";
+import { cookies } from "next/headers";
 
 /**
  * Configuration for the axios instance.
@@ -19,12 +19,10 @@ const config: CreateAxiosDefaults = {
 const instance = axios.create(config);
 
 instance.interceptors.request.use(async (request) => {
-  const session = await auth();
-
-  if (session) {
+  if (cookies().has("next_jwt")) {
     request.headers = {
       ...request.headers,
-      Authorization: `Bearer ${session.jwt}`,
+      Authorization: `Bearer ${cookies().get("next_jwt")?.value}`,
     };
   }
 
