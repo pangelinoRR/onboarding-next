@@ -40,7 +40,8 @@ export default function RootLayout({
                 sx={{
                   backgroundColor: "backgroundGrey.main",
                   flexGrow: 1,
-                  paddingX: "64px",
+                  paddingX: "80px",
+                  paddingBottom: "80px",
                 }}
               >
                 <TopBar />
